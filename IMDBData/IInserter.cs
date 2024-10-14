@@ -7,6 +7,6 @@ namespace IMDBData
     public interface IInserter
     {
        
-        void Insert(List<Title> Titles, List<Person> Persons, List<Crew> Crews, SqlConnection SqlConn, SqlTransaction TransAction);
+        void Insert(List<Title> titles, List<Person> persons, List<Crew> crews, SqlConnection sqlConn, SqlTransaction transAction);
     }
 }
