@@ -24,7 +24,7 @@ switch (input)
 // Read title file
 int lineCount = 0;
 List<Title> Titles = new List<Title>();
-string titleFilePath = "C:\\Users\\hurli\\Desktop\\School shit\\4th semester\\tempData\\title.basics.tsv";
+string titleFilePath = "C:/temp/tempData/title.basics.tsv/title.basics.tsv";
 
 foreach (string line in File.ReadLines(titleFilePath).Skip(1))
 {
@@ -53,9 +53,9 @@ foreach (string line in File.ReadLines(titleFilePath).Skip(1))
         PrimaryTitle = primaryTitle,
         OriginalTitle = originalTitle,
         IsAdult = isAdult,
-        StartYear = (int)startYear,
+        StartYear = startYear,
         EndYear = endYear,
-        RuntimeMinutes = (int)runtimeMinutes
+        RuntimeMinutes = runtimeMinutes
     };
 
     Titles.Add(newTitle);
@@ -68,7 +68,7 @@ Console.WriteLine("List of titles length: " + Titles.Count);
 // Read person file
 lineCount = 0;
 List<Person> Persons = new List<Person>();
-string personFilePath = "C:\\Users\\hurli\\Desktop\\School shit\\4th semester\\tempData\\name.basics.tsv";
+string personFilePath = "C:/temp/tempData/name.basics.tsv/name.basics.tsv";
 
 foreach (string line in File.ReadLines(personFilePath).Skip(1))
 {
@@ -91,7 +91,7 @@ foreach (string line in File.ReadLines(personFilePath).Skip(1))
     {
         NConst = nconst,
         PrimaryName = primaryName,
-        BirthYear = (int)birthYear,
+        BirthYear = birthYear,
         DeathYear = deathYear
     };
 
@@ -105,7 +105,7 @@ Console.WriteLine("List of persons length: " + Persons.Count);
 // Read crew file
 lineCount = 0;
 List<Crew> Crews = new List<Crew>();
-string crewFilePath = "C:\\Users\\hurli\\Desktop\\School shit\\4th semester\\tempData\\title.crew.tsv";
+string crewFilePath = "C:/temp/tempData/title.crew.tsv/title.crew.tsv";
 
  foreach(string line in File.ReadLines(crewFilePath).Skip(1))
 {
@@ -135,7 +135,9 @@ string crewFilePath = "C:\\Users\\hurli\\Desktop\\School shit\\4th semester\\tem
     lineCount++;
 }
 
-SqlConnection sqlConn = new SqlConnection("server=localhost;database=imdbDatabase;user id=user;password=fiskmedkiks22;TrustServerCertificate=true");
+Console.WriteLine("List of Crew length: " + Crews.Count);
+
+SqlConnection sqlConn = new SqlConnection("server=localhost;database=imdbDatabase;user id=User;password=fiskmedkiks22;TrustServerCertificate=true");
 
 sqlConn.Open();
 SqlTransaction transAction = sqlConn.BeginTransaction();
@@ -162,12 +164,10 @@ Console.WriteLine("Milliseconds passed: " + (after - before).TotalMilliseconds);
 
 int? ParseInt(string value)
 {
-    if (value == "\\N")
+    if (value.ToLower() == "\\n") // checks if it is \n
     {
         return null;
     }
-    else
-    {
-        return int.Parse(value);
-    }
+    return int.Parse(value);
+
 }
