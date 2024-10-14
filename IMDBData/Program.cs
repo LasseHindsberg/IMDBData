@@ -23,7 +23,7 @@ switch (input)
 
 // Read title file
 int lineCount = 0;
-List<Title> Titles = new List<Title>();
+List<Title> titles = new List<Title>();
 string titleFilePath = "C:/temp/tempData/title.basics.tsv/title.basics.tsv";
 
 foreach (string line in File.ReadLines(titleFilePath).Skip(1))
@@ -58,16 +58,16 @@ foreach (string line in File.ReadLines(titleFilePath).Skip(1))
         RuntimeMinutes = runtimeMinutes
     };
 
-    Titles.Add(newTitle);
+    titles.Add(newTitle);
 
     lineCount++;
 }
 
-Console.WriteLine("List of titles length: " + Titles.Count);
+Console.WriteLine("List of titles length: " + titles.Count);
 
 // Read person file
 lineCount = 0;
-List<Person> Persons = new List<Person>();
+List<Person> persons = new List<Person>();
 string personFilePath = "C:/temp/tempData/name.basics.tsv/name.basics.tsv";
 
 foreach (string line in File.ReadLines(personFilePath).Skip(1))
@@ -95,16 +95,16 @@ foreach (string line in File.ReadLines(personFilePath).Skip(1))
         DeathYear = deathYear
     };
 
-    Persons.Add(newPerson);
+    persons.Add(newPerson);
 
     lineCount++;
 }
 
-Console.WriteLine("List of persons length: " + Persons.Count);
+Console.WriteLine("List of persons length: " + persons.Count);
 
 // Read crew file
 lineCount = 0;
-List<Crew> Crews = new List<Crew>();
+List<Crew> crews = new List<Crew>();
 string crewFilePath = "C:/temp/tempData/title.crew.tsv/title.crew.tsv";
 
  foreach(string line in File.ReadLines(crewFilePath).Skip(1))
@@ -130,14 +130,14 @@ string crewFilePath = "C:/temp/tempData/title.crew.tsv/title.crew.tsv";
         Writers = writers
     };
 
-    Crews.Add(newCrew);
+    crews.Add(newCrew);
 
     lineCount++;
 }
 
-Console.WriteLine("List of Crew length: " + Crews.Count);
+Console.WriteLine("List of Crew length: " + crews.Count);
 
-SqlConnection sqlConn = new SqlConnection("server=localhost;database=imdbDatabase;user id=User;password=fiskmedkiks22;TrustServerCertificate=true");
+SqlConnection sqlConn = new SqlConnection("server=localhost,1433;database=imdbDatabase;user id=User;password=fiskmedkiks22;TrustServerCertificate=true");
 try
 {
     sqlConn.Open();
@@ -158,8 +158,9 @@ DateTime before = DateTime.Now;
 
 try
 { 
-    inserter.Insert(Titles, Persons, Crews, sqlConn, transAction);
-    transAction.Rollback();
+    inserter.Insert(titles, persons, crews, sqlConn, transAction);
+    transAction.Commit();
+    // transAction.Rollback();
 
 }
 catch (Exception e)
