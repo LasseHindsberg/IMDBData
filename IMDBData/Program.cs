@@ -138,8 +138,20 @@ string crewFilePath = "C:/temp/tempData/title.crew.tsv/title.crew.tsv";
 Console.WriteLine("List of Crew length: " + Crews.Count);
 
 SqlConnection sqlConn = new SqlConnection("server=localhost;database=imdbDatabase;user id=User;password=fiskmedkiks22;TrustServerCertificate=true");
+try
+{
+    sqlConn.Open();
+}
+catch (SqlException ex)
+{
+    Console.WriteLine("SQL Exception: " + ex.Message);
+}
+catch (Exception ex)
+{
+    Console.WriteLine("General Exception: " + ex.Message);
+}
 
-sqlConn.Open();
+// sqlConn.Open();
 SqlTransaction transAction = sqlConn.BeginTransaction();
 
 DateTime before = DateTime.Now;
