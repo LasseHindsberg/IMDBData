@@ -26,10 +26,10 @@ namespace IMDBData
             }
         }
 
-        public void Insert (List<Title> Titles, List<Person> Persons, List<Crew> Crews, SqlConnection SqlConn, SqlTransaction TransAction)
+        public void Insert (List<Title> titles, List<Person> persons, List<Crew> crews, SqlConnection SqlConn, SqlTransaction TransAction)
         {
             // Insert Titles
-            foreach (Title title in Titles)
+            foreach (Title title in titles)
             {
                 string SQL = "INSERT INTO [Titles]([TConst]," +
                     "[PrimaryTitle],[OriginalTitle],[IsAdult],[StartYear]," +
@@ -46,7 +46,7 @@ namespace IMDBData
                 SqlCommand sqlComm = new SqlCommand(SQL, SqlConn, TransAction);
                 sqlComm.ExecuteNonQuery();
             }
-            foreach (Person person in Persons)
+            foreach (Person person in persons)
             {
                 string SQL = "INSERT INTO [Persons]([NConst],[PrimaryName],[BirthYear],[DeathYear]) " +
                     "VALUES('" + person.NConst + "'" +
@@ -57,7 +57,7 @@ namespace IMDBData
                 SqlCommand sqlComm = new SqlCommand(SQL, SqlConn, TransAction);
                 sqlComm.ExecuteNonQuery();
             }
-            foreach (Crew crew in Crews)
+            foreach (Crew crew in crews)
             {
                 string SQL = "INSERT INTO [Crews]([TConst],[Directors],[Writers]) " +
                     "VALUES('" + crew.TConst + "'" +
