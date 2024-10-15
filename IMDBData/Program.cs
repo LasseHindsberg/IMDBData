@@ -17,6 +17,10 @@ switch (input)
         inserter = new NormalInserter();
         break;
 
+    case "2": 
+        inserter = new PreparedInserter();
+        break;
+
     default:
         throw new Exception("Invalid input");
 }
@@ -160,12 +164,13 @@ try
 { 
     inserter.Insert(titles, persons, crews, sqlConn, transAction);
     transAction.Commit();
+    Console.WriteLine("Insertion finished. pepelaugh");
     // transAction.Rollback();
 
 }
 catch (Exception e)
 {
-    Console.WriteLine(e.Message);
+    Console.WriteLine("inserter failed: " + e.Message);
     transAction.Rollback();
 }
 
