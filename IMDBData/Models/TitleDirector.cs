@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IMDBData.Models
 {
-    public class TitleDirecter
+    public class TitleDirector
     {
         public string TConst { get; set; }
         public string NConst { get; set; }
