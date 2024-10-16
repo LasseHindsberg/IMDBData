@@ -4,26 +4,76 @@
 using IMDBData;
 using IMDBData.Models;
 using System.Data.SqlClient;
+using System.Runtime.CompilerServices;
+
+// --- INSERTER CLASSES ---
+IInserter inserter = null;
 
 
-IInserter inserter;
+// --- USER INPUT ---
+Console.WriteLine(
+    "What do you want to do? \n " +
+    " 1. Use normal inserter \n" +
+    " 2. Use prepared inserter \n" +
+    " 3. search for a movie by title \n" +
+    " 4. search for a person by name \n" +
+    " 5. add a movie to the database \n" +
+    " 6. Add a person to the database \n" +
+    " 7. Update Movie information. \n" +
+    " ---------------------------------");
 
-Console.WriteLine("DO stuff :D");
-string input = Console.ReadLine();
 
+string? input = Console.ReadLine();
+
+
+// --- SWITCH STATEMENT ---
 switch (input)
 {
     case "1":
-        inserter = new NormalInserter();
+        inserter = new NormalInserter(); // KEEP OR REMOVE \[T]/
         break;
 
     case "2": 
         inserter = new PreparedInserter();
         break;
 
+    case "3":
+        Console.WriteLine("Enter the title of the movie you want to search for");
+        // cw("Enter the title of the movie you want to search for: ");
+        // string title = Console.ReadLine();
+        // searchForMovieByTitle(title);
+        break;
+    
+    case "4":
+        //cw("Enter the name of the person you want to search for: ");
+        //string name = Console.ReadLine();
+        //searchForPersonByName(name);
+        break;
+
+    case "5":
+        //cw("Enter the title of the movie you want to add: ");
+        //string title = Console.ReadLine();
+        //addMovieToDatabase(title);
+        break;
+
+    case "6":
+        //cw("Enter the name of the person you want to add: ");
+        //string name = Console.ReadLine();
+        //addPersonToDatabase(name);
+        break;
+
+    case "7": 
+        //cw("Enter the title of the movie you want to update: ");
+        //string title = Console.ReadLine();
+        //updateMovieInformation(title);
+        break;
+
     default:
         throw new Exception("Invalid input");
 }
+
+
+// --- FUNCTIONALITY OF INSERTION OF DATA INTO DATABASE ---
 
 // Read title file
 int lineCount = 0;
@@ -164,7 +214,7 @@ try
 { 
     inserter.Insert(titles, persons, crews, sqlConn, transAction);
     transAction.Commit();
-    Console.WriteLine("Insertion finished. pepelaugh");
+    Console.WriteLine("Insertion finished.");
     // transAction.Rollback();
 
 }
