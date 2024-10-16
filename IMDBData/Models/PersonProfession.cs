@@ -9,6 +9,6 @@ namespace IMDBData.Models
     public class PersonProfession
     {
         public string NConst { get; set; }
-        public string Profession { get; set; }
+        public string? Profession { get; set; }
     }
 }
