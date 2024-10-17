@@ -8,7 +8,8 @@ using System.Runtime.CompilerServices;
 
 // --- INSERTER CLASSES ---
 IInserter inserter = null;
-
+DataLoader dataLoader = new DataLoader();
+bool shouldInsert = false;
 
 // --- USER INPUT ---
 Console.WriteLine(
@@ -30,10 +31,12 @@ string? input = Console.ReadLine();
 switch (input)
 {
     case "1":
+        shouldInsert = true;
         inserter = new NormalInserter(); // KEEP OR REMOVE \[T]/
         break;
 
     case "2": 
+        shouldInsert = true;
         inserter = new PreparedInserter();
         break;
 
@@ -72,9 +75,70 @@ switch (input)
         throw new Exception("Invalid input");
 }
 
+if (shouldInsert)
+{
+
+
+// load data from files
+string titleFilePath = "C:/temp/tempData/title.basics.tsv/title.basics.tsv";
+string personFilePath = "C:/temp/tempData/name.basics.tsv/name.basics.tsv";
+string crewFilePath = "C:/temp/tempData/title.crew.tsv/title.crew.tsv";
+
+List<Title> titles = dataLoader.LoadTitles(titleFilePath);
+List<Person> persons = dataLoader.LoadPersons(personFilePath);
+List<Crew> crews = dataLoader.LoadCrews(crewFilePath);
+
+Console.WriteLine("List of titles length: " + titles.Count);
+Console.WriteLine("List of persons length: " + persons.Count);
+Console.WriteLine("List of crews length: " + crews.Count);
+
+    // --- TRY CONNECTION TO DATABASE ---
+    SqlConnection sqlConn = new SqlConnection("server=localhost,1433;database=imdbDatabase;user id=User;password=fiskmedkiks22;TrustServerCertificate=true");
+    try
+    {
+        sqlConn.Open();
+    }
+    catch (SqlException ex)
+    {
+        Console.WriteLine("SQL Exception: " + ex.Message);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("General Exception: " + ex.Message);
+    }
+
+    SqlTransaction transAction = sqlConn.BeginTransaction();
+
+    DateTime before = DateTime.Now;
+
+    // --- INSERT DATA INTO DATABASE ---
+    try
+    {
+        inserter.Insert(titles, persons, crews, sqlConn, transAction);
+        transAction.Commit();
+        Console.WriteLine("Insertion finished.");
+        // transAction.Rollback();
+
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine("inserter failed: " + e.Message);
+        transAction.Rollback();
+    }
+
+    DateTime after = DateTime.Now;
+
+    // --- CLOSE CONNECTION ---
+    sqlConn.Close();
+
+    // --- PRINT TIME TAKEN FOR INSERTION---
+    Console.WriteLine("Milliseconds passed: " + (after - before).TotalMilliseconds);
+
+
+}
 
 // --- FUNCTIONALITY OF INSERTION OF DATA INTO DATABASE ---
-
+/*
 // Read title file
 int lineCount = 0;
 List<Title> titles = new List<Title>();
@@ -190,52 +254,6 @@ string crewFilePath = "C:/temp/tempData/title.crew.tsv/title.crew.tsv";
 }
 
 Console.WriteLine("List of Crew length: " + crews.Count);
+*/
 
-SqlConnection sqlConn = new SqlConnection("server=localhost,1433;database=imdbDatabase;user id=User;password=fiskmedkiks22;TrustServerCertificate=true");
-try
-{
-    sqlConn.Open();
-}
-catch (SqlException ex)
-{
-    Console.WriteLine("SQL Exception: " + ex.Message);
-}
-catch (Exception ex)
-{
-    Console.WriteLine("General Exception: " + ex.Message);
-}
 
-// sqlConn.Open();
-SqlTransaction transAction = sqlConn.BeginTransaction();
-
-DateTime before = DateTime.Now;
-
-try
-{ 
-    inserter.Insert(titles, persons, crews, sqlConn, transAction);
-    transAction.Commit();
-    Console.WriteLine("Insertion finished.");
-    // transAction.Rollback();
-
-}
-catch (Exception e)
-{
-    Console.WriteLine("inserter failed: " + e.Message);
-    transAction.Rollback();
-}
-
-DateTime after = DateTime.Now;
-
-sqlConn.Close();
-
-Console.WriteLine("Milliseconds passed: " + (after - before).TotalMilliseconds);
-
-int? ParseInt(string value)
-{
-    if (value.ToLower() == "\\n") // checks if it is \n
-    {
-        return null;
-    }
-    return int.Parse(value);
-
-}
