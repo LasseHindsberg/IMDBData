@@ -151,5 +151,38 @@ namespace IMDBData
                     Console.WriteLine("an error occured: " + ex.Message);
                 }
         }
+
+        // how to make this one function ?
+        public void UpdateMovie(string movieId, string primaryTitle, string originalTitle, int startYear, int runtimeMinutes)
+        {
+            using (SqlConnection sqlConn = new SqlConnection(ConnString))
+                try
+                {
+                    sqlConn.Open();
+
+                    using (SqlCommand cmd = new SqlCommand("updateMovie", sqlConn))
+                    {
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        // How does user get movieId?
+                        cmd.Parameters.Add(new SqlParameter("@movieId", movieId));
+
+                        // user inputs will change the values of these parameters.
+                        cmd.Parameters.Add(new SqlParameter("@primaryTitle", primaryTitle));
+                        cmd.Parameters.Add(new SqlParameter("@originalTitle", originalTitle));
+                        cmd.Parameters.Add(new SqlParameter("@startYear", startYear));
+                        cmd.Parameters.Add(new SqlParameter("@runtimeMinutes", runtimeMinutes));
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine("an SQL error occured: " + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("an error occured: " + ex.Message);
+                }
+        }
     }
 }

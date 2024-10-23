@@ -80,9 +80,19 @@ switch (input)
         break;
 
     case "7":
-        Console.WriteLine("Enter the title of the movie you want to update: ");
-        //string title = Console.ReadLine();
-        //updateMovieInformation(title);
+        Console.WriteLine("Enter the Id of the movie you want to update: ");
+        string movieId = Console.ReadLine();
+        //cw write out the movie information from the id provided.
+
+        Console.WriteLine("Enter the new title of the movie: ");
+        string newTitle = Console.ReadLine();
+        Console.WriteLine("Enter the new original title of the movie: ");
+        string newOriginalTitle = Console.ReadLine();
+        Console.WriteLine("Enter the new year of release, of the movie: ");
+        int newStartYear = int.Parse(Console.ReadLine());
+        Console.WriteLine("Enter the new runtime of the movie (in minutes): ");
+        int newRuntimeMinutes = int.Parse(Console.ReadLine());
+        reader.UpdateMovie(movieId, newTitle, newOriginalTitle, newStartYear, newRuntimeMinutes);
         break;
 
     default:
