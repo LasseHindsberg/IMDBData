@@ -1,4 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿// See https:aka.ms/new-console-template for more information
 // Console.WriteLine("Hello, World!");
 
 using IMDBData;
@@ -7,13 +7,18 @@ using System.Data.SqlClient;
 using System.Runtime.CompilerServices;
 
 // --- INSERTER CLASSES ---
+// Handles bulk insertion of data into the database
 IInserter inserter = null;
 DataLoader dataLoader = new DataLoader();
 bool shouldInsert = false;
 
+// --- READER CLASS ---
+// Handles all functionality for searching the database
+Reader reader = new Reader();
+
 // --- USER INPUT ---
 Console.WriteLine(
-    "What do you want to do? \n " +
+    "What do you want to do? \n" +
     " 1. Use normal inserter \n" +
     " 2. Use prepared inserter \n" +
     " 3. search for a movie by title \n" +
@@ -55,19 +60,19 @@ switch (input)
         break;
 
     case "5":
-        //cw("Enter the title of the movie you want to add: ");
+        Console.WriteLine("Enter the title of the movie you want to add: ");
         //string title = Console.ReadLine();
-        //addMovieToDatabase(title);
+        //addMovieToDatabase(title,);
         break;
 
     case "6":
-        //cw("Enter the name of the person you want to add: ");
+        Console.WriteLine("Enter the name of the person you want to add: ");
         //string name = Console.ReadLine();
         //addPersonToDatabase(name);
         break;
 
-    case "7": 
-        //cw("Enter the title of the movie you want to update: ");
+    case "7":
+        Console.WriteLine("Enter the title of the movie you want to update: ");
         //string title = Console.ReadLine();
         //updateMovieInformation(title);
         break;
@@ -78,20 +83,20 @@ switch (input)
 
 if (shouldInsert)
 {
+    // load data from files
+    string titleFilePath = "C:/temp/tempData/title.basics.tsv/title.basics.tsv";
+    string personFilePath = "C:/temp/tempData/name.basics.tsv/name.basics.tsv";
+    string crewFilePath = "C:/temp/tempData/title.crew.tsv/title.crew.tsv";
 
+    // take data from files and put them into lists
+    List<Title> titles = dataLoader.LoadTitles(titleFilePath);
+    List<Person> persons = dataLoader.LoadPersons(personFilePath);
+    List<Crew> crews = dataLoader.LoadCrews(crewFilePath);
 
-// load data from files
-string titleFilePath = "C:/temp/tempData/title.basics.tsv/title.basics.tsv";
-string personFilePath = "C:/temp/tempData/name.basics.tsv/name.basics.tsv";
-string crewFilePath = "C:/temp/tempData/title.crew.tsv/title.crew.tsv";
-
-List<Title> titles = dataLoader.LoadTitles(titleFilePath);
-List<Person> persons = dataLoader.LoadPersons(personFilePath);
-List<Crew> crews = dataLoader.LoadCrews(crewFilePath);
-
-Console.WriteLine("List of titles length: " + titles.Count);
-Console.WriteLine("List of persons length: " + persons.Count);
-Console.WriteLine("List of crews length: " + crews.Count);
+    // Print the length of the lists
+    Console.WriteLine("List of titles length: " + titles.Count);
+    Console.WriteLine("List of persons length: " + persons.Count);
+    Console.WriteLine("List of crews length: " + crews.Count);
 
     // --- TRY CONNECTION TO DATABASE ---
     SqlConnection sqlConn = new SqlConnection("server=localhost,1433;database=imdbDatabase;user id=User;password=fiskmedkiks22;TrustServerCertificate=true");
@@ -112,7 +117,7 @@ Console.WriteLine("List of crews length: " + crews.Count);
 
     DateTime before = DateTime.Now;
 
-    // --- INSERT DATA INTO DATABASE ---
+    // --- TRY TO INSERT DATA INTO DATABASE ---
     try
     {
         inserter.Insert(titles, persons, crews, sqlConn, transAction);
@@ -134,6 +139,5 @@ Console.WriteLine("List of crews length: " + crews.Count);
 
     // --- PRINT TIME TAKEN FOR INSERTION---
     Console.WriteLine("Milliseconds passed: " + (after - before).TotalMilliseconds);
-
-
 }
+
