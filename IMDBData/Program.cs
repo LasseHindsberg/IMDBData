@@ -60,9 +60,15 @@ switch (input)
         break;
 
     case "5":
-        Console.WriteLine("Enter the title of the movie you want to add: ");
-        //string title = Console.ReadLine();
-        //addMovieToDatabase(title,);
+        Console.WriteLine("Enter the primary title of the movie you want to add:");
+        string primaryTitle = Console.ReadLine();
+        Console.WriteLine("Enter the original title of the movie you want to add:");
+        string originalTitle = Console.ReadLine();
+        Console.WriteLine("Enter the year of release, of the movie you want to add:");
+        int startYear = int.Parse(Console.ReadLine());
+        Console.WriteLine("Enter the runtime of the movie you want to add (in minutes):");
+        int runtimeMinutes = int.Parse(Console.ReadLine());
+        reader.addMovieToDatabase(primaryTitle, originalTitle, startYear, runtimeMinutes);
         break;
 
     case "6":
