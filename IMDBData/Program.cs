@@ -73,8 +73,10 @@ switch (input)
 
     case "6":
         Console.WriteLine("Enter the name of the person you want to add: ");
-        //string name = Console.ReadLine();
-        //addPersonToDatabase(name);
+        string ActorName = Console.ReadLine();
+        Console.WriteLine("Enter the birth year of the person you want to add: ");
+        int birthYear = int.Parse(Console.ReadLine());
+        reader.addPersonToDatabase(ActorName, birthYear);
         break;
 
     case "7":

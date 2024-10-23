@@ -123,5 +123,33 @@ namespace IMDBData
                     Console.WriteLine("an error occured: " + ex.Message);
                 }
         }
+        
+        // temporary place for the addPersonToDatabase method until it is moved to the correct file
+        public void addPersonToDatabase(string actorName, int birthYear)
+        {
+            using (SqlConnection sqlConn = new SqlConnection(ConnString))
+                try
+                {
+                    sqlConn.Open();
+
+                    using (SqlCommand cmd = new SqlCommand("addPerson", sqlConn))
+                    {
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                        cmd.Parameters.Add(new SqlParameter("@Name", actorName));
+                        cmd.Parameters.Add(new SqlParameter("@BirthYear", birthYear));
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine("an SQL error occured: " + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("an error occured: " + ex.Message);
+                }
+        }
     }
 }
