@@ -42,9 +42,9 @@ switch (input)
 
     case "3":
         Console.WriteLine("Enter the title of the movie you want to search for");
-        // cw("Enter the title of the movie you want to search for: ");
-        // string title = Console.ReadLine();
-        // searchForMovieByTitle(title);
+        string title = Console.ReadLine();
+        Console.WriteLine("You've searched for movies including: \n" + title + "\nSearching...");
+        reader.SearchForMovieByTitle(title);
         break;
     
     case "4":
