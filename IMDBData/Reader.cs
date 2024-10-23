@@ -13,9 +13,9 @@ namespace IMDBData
         public void SearchForMovieByTitle(string title)
         {
             using (SqlConnection sqlConn = new SqlConnection(ConnString))
-            try
-            {
-                sqlConn.Open();
+                try
+                {
+                    sqlConn.Open();
 
                     using (SqlCommand cmd = new SqlCommand("searchByTitle", sqlConn))
                     {
@@ -35,14 +35,14 @@ namespace IMDBData
 
                                     Console.WriteLine($"Title: {primaryTitle}, Year: {year}");
                                 }
-                            } 
+                            }
                             else
                             {
                                 Console.WriteLine("No movies found with the title.");
                             }
                         }
                     }
-            }
+                }
                 catch (SqlException ex)
                 {
                     Console.WriteLine("an SQL error occured: " + ex.Message);
