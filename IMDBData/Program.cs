@@ -48,9 +48,10 @@ switch (input)
         break;
     
     case "4":
-        //cw("Enter the name of the person you want to search for: ");
-        //string name = Console.ReadLine();
-        //searchForPersonByName(name);
+        Console.WriteLine("Enter the name of the person you want to search for: ");
+        string name = Console.ReadLine();
+        Console.WriteLine("You've searched for people including: \n" + name + "\nSearching...");
+        reader.SearchByName(name);
         break;
 
     case "5":

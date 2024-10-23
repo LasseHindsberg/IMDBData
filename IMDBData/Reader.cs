@@ -53,7 +53,47 @@ namespace IMDBData
                 }
         }
 
+        public void SearchByName(string name)
+        {
+            using (SqlConnection sqlConn = new SqlConnection(ConnString))
+                try
+                {
+                    sqlConn.Open();
 
+                    using (SqlCommand cmd = new SqlCommand("searchByName", sqlConn))
+                    {
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                        cmd.Parameters.Add(new SqlParameter("@Name", name));
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    string? primaryName = reader["primaryName"].ToString();
+                                    // add more fields possibly?
+
+                                    Console.WriteLine($"Name: {primaryName}");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("No persons found with the name.");
+                            }
+                        }
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine("an SQL error occured: " + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("an error occured: " + ex.Message);
+                }
+        }
 
     }
 }
