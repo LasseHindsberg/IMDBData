@@ -45,7 +45,7 @@ namespace IMDBData
             }
                 catch (SqlException ex)
                 {
-                    Console.WriteLine("an SQL error occured: " +ex.Message);
+                    Console.WriteLine("an SQL error occured: " + ex.Message);
                 }
                 catch (Exception ex)
                 {
